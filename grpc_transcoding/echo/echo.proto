@@ -1,0 +1,41 @@
+syntax = "proto3";
+
+package echo;
+
+//import "google/rpc/status.proto";
+import "google/api/annotations.proto";
+
+option go_package = "github.com/salrashid123/go-grpc-bazel-docker/echo";
+
+service EchoServer {
+  rpc SayHelloUnary (EchoRequest) returns (EchoReply) {
+
+    option (google.api.http) = {
+      get: "/echo.EchoServer/SayHelloUnary/{name}"
+    }; 
+
+//    option (google.api.http) = {
+//      post: "/echo.EchoServer/SayHelloUnary"
+//    };  
+
+  }
+  rpc SayHelloClientStream(stream EchoRequest) returns (EchoReply) { }    
+  rpc SayHelloServerStream(EchoRequest) returns (stream EchoReply) {
+
+    option (google.api.http) = {
+      get: "/echo.EchoServer/SayHelloServerStream/{name}"
+    };  
+
+  }   
+  rpc SayHelloBiDiStream(stream EchoRequest) returns (stream EchoReply) {}
+}
+
+message EchoRequest {
+  string name = 1;
+}
+
+message EchoReply {
+  string message = 1;
+}
+
+
